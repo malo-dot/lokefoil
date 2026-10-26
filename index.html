@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0e1a24">
+<title>Lokefoil – Parc test</title>
+<style>html,body{margin:0;height:100%;background:#f4f6f8;font-family:system-ui,-apple-system,sans-serif;color:#0e1a24}#boot{display:flex;height:100%;align-items:center;justify-content:center;flex-direction:column;gap:12px;font-size:15px}#boot b{font-size:18px}#boot button{display:none;padding:10px 18px;border-radius:10px;border:0;background:#0e1a24;color:#fff;font-size:15px}</style>
+</head>
+<body>
+<div id="boot"><b>Lokefoil – Parc test</b><span id="msg">Chargement…</span><button id="re" onclick="location.reload()">Réessayer</button></div>
+<script>
+(function(){
+  var API = 'https://script.google.com/macros/s/AKfycbxiS1ksVQD5Udj9vLwttV7fk3kYU2UND9LbM_ie9cBWnZVvofg-8xzTrfOtSZloHHJ1ew/exec';
+  var mode = new URLSearchParams(location.search).get('mode') === 'admin' ? 'admin' : 'team';
+  function fail(){ document.getElementById('msg').textContent = 'Connexion impossible. Vérifie le réseau puis réessaie.'; document.getElementById('re').style.display = 'block'; }
+  fetch(API + '?raw=1&mode=' + mode + '&t=' + Date.now(), {credentials: 'omit', redirect: 'follow'})
+    .then(function(r){ if (!r.ok) throw new Error(r.status); return r.text(); })
+    .then(function(h){ if (h.indexOf('__LOKE_API') < 0) throw new Error('bad'); document.open(); document.write(h); document.close(); })
+    .catch(fail);
+})();
+</script>
+</body>
+</html>
